@@ -4,7 +4,10 @@
 //    * Defeat each enemy-robot
 // "LOSE" - Player robot's health is zero or less
 
-
+var randomNumber = function (min, max) {
+  var value = Math.floor(Math.random() * (max - min + 1) + min);
+  return value;
+}
 
 // fight function (now with parameter for enemy's name)
 var fight = function (enemy) {
@@ -150,10 +153,7 @@ var shop = function () {
   }
 }
 
-var randomNumber = function (min, max) {
-  var value = Math.floor(Math.random() * (max - min + 1) + min);
-  return value;
-}
+
 
 var playerInfo = {
   name: window.prompt("What is your robot's name?"),
