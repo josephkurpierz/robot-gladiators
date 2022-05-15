@@ -33,57 +33,57 @@ var fight = function (enemy) {
   //keeps track of who goes first
   var isPlayerTurn = true;
 
-  if (Math.random() > 0.5){
+  if (Math.random() > 0.5) {
     isPlayerTurn = false;
   }
 
   while (playerInfo.health > 0 && enemy.health > 0) {
-    if (isPlayerTurn){
-    // ask player if they'd like to fight or run
-    if (fightOrSkip()){
-      //if true, leave fight by breaking loop
-      break;
-    }
+    if (isPlayerTurn) {
+      // ask player if they'd like to fight or run
+      if (fightOrSkip()) {
+        //if true, leave fight by breaking loop
+        break;
+      }
 
-    // remove enemy's health by subtracting the amount set in the playerInfo.attack variable
-    var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+      // remove enemy's health by subtracting the amount set in the playerInfo.attack variable
+      var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
 
-    enemy.health = Math.max(0, enemy.health - damage);
-    console.log(
-      playerInfo.name + ' attacked ' + enemy.name + '. ' + enemy.name + ' now has ' + enemy.health + ' health remaining.'
-    );
+      enemy.health = Math.max(0, enemy.health - damage);
+      console.log(
+        playerInfo.name + ' attacked ' + enemy.name + '. ' + enemy.name + ' now has ' + enemy.health + ' health remaining.'
+      );
 
-    // check enemy's health
-    if (enemy.health <= 0) {
-      window.alert(enemy.name + ' has died!');
+      // check enemy's health
+      if (enemy.health <= 0) {
+        window.alert(enemy.name + ' has died!');
 
-      // award player money for winning
-      playerInfo.money = playerInfo.money + 20;
+        // award player money for winning
+        playerInfo.money = playerInfo.money + 20;
 
-      // leave while() loop since enemy is dead
-      break;
+        // leave while() loop since enemy is dead
+        break;
+      } else {
+        window.alert(enemy.name + ' still has ' + enemy.health + ' health left.');
+      }
     } else {
-      window.alert(enemy.name + ' still has ' + enemy.health + ' health left.');
-    }
-  } else{
 
-    // remove players's health by subtracting the amount set in the enemy.attack variable
-    var damage = randomNumber(enemy.attack - 3, enemy.attack);
-    playerInfo.health = Math.max(0, playerInfo.health - damage);
-    console.log(
-      enemy.name + ' attacked ' + playerInfo.name + '. ' + playerInfo.name + ' now has ' + playerInfo.health + ' health remaining.'
-    );
+      // remove players's health by subtracting the amount set in the enemy.attack variable
+      var damage = randomNumber(enemy.attack - 3, enemy.attack);
+      playerInfo.health = Math.max(0, playerInfo.health - damage);
+      console.log(
+        enemy.name + ' attacked ' + playerInfo.name + '. ' + playerInfo.name + ' now has ' + playerInfo.health + ' health remaining.'
+      );
 
-    // check player's health
-    if (playerInfo.health <= 0) {
-      window.alert(playerInfo.name + ' has died!');
-      // leave while() loop if player is dead
-      break;
-    } else {
-      window.alert(playerInfo.name + ' still has ' + playerInfo.health + ' health left.');
+      // check player's health
+      if (playerInfo.health <= 0) {
+        window.alert(playerInfo.name + ' has died!');
+        // leave while() loop if player is dead
+        break;
+      } else {
+        window.alert(playerInfo.name + ' still has ' + playerInfo.health + ' health left.');
+      }
     }
-  }
-  isPlayerTurn = !isPlayerTurn;
+    isPlayerTurn = !isPlayerTurn;
   } // end of while loop
 }; // end of fight function
 
@@ -129,12 +129,21 @@ var startGame = function () {
 
 //function to end the game
 var endGame = function () {
-  if (playerInfo.health > 0) {
-    window.alert("Great job, you've survived the game! You now have a score of " + playerInfo.money + ".")
+  window.alert("The game has ended, Let's see how you did!");
+
+  var highScore = localStorage.getItem("highscore");
+  if (highScore === null) {
+    highScore = 0;
+  }
+  if (playerInfo.money > highScore) {
+    localStorage.setItem("highscore", playerInfo.money);
+    localStorage.setItem("name", playerInfo.name);
+    alert(playerInfo.name + " now has the high score of " + playerInfo.money + "!");
   }
   else {
-    window.alert("You've lost your robot in battle.")
+    alert(playerInfo.name + " did not beat the high score of " + highScore + ". Maybe next time!");
   }
+ 
   var playAgainConfirm = window.confirm("Would you like to play again?");
   if (playAgainConfirm) {
     //restart game
